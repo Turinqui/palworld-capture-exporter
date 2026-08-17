@@ -12,21 +12,21 @@ The exporter writes schema version 1 as UTF-8 JSON.
 | `exportedAt` | UTC timestamp in ISO 8601 format. |
 | `source` | Describes the runtime platform, access method, and authoritative field. |
 | `summary` | Convenience counts for validation and UI feedback. |
-| `pals` | Array of internal Pal IDs and their positive capture counts. |
+| `pals` | Complete Paldeck array, including zero-count species. |
+| `unmappedCaptureEntries` | Positive capture records not represented in the Paldeck catalogue. |
 
-## Sparse-map semantics
+## Catalogue-join semantics
 
 `PalCaptureCount.Items` contains only IDs with a recorded positive capture
-count. Runtime testing confirmed that catching a previously absent species
-adds a new entry to the map.
+count. The exporter joins it to `DT_PalMonsterParameter`, resolves names from
+`DT_PalNameText`, and supplies zero for an absent catalogue ID.
 
-An importer should join the exported rows to its complete Pal catalogue using
-the internal ID:
+An importer can use `pals` directly:
 
 ```text
-catalogue ID present in export -> use exported captureCount
-catalogue ID absent from export -> captureCount is 0
-export ID absent from catalogue -> preserve and flag as unknown/new content
+captureCount > 0 -> caught
+captureCount = 0 -> uncaught
+unmappedCaptureEntries -> preserve for diagnostics/future game updates
 ```
 
 The final rule prevents a webapp from silently discarding IDs introduced by a
@@ -40,12 +40,12 @@ An importer should:
 2. Require `schemaVersion` to equal `1`.
 3. Validate against `schema/pal_capture_data.schema.json`.
 4. Reject duplicate IDs and negative or non-integer counts.
-5. Display a warning for unknown IDs while retaining their raw data.
+5. Preserve `unmappedCaptureEntries` even when they are not displayed.
 6. Treat the summary as a consistency check rather than the authoritative
    source of individual counts.
 
-The exporter sorts `pals` by ID for deterministic files, but importers should
-not rely on array order.
+The exporter sorts `pals` by Paldeck index and suffix, but importers should use
+the explicit fields rather than relying on array order.
 
 ## Comparison behaviour
 

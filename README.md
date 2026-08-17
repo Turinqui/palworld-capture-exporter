@@ -9,16 +9,17 @@ WinGDK**.
 
 ## Status
 
-Version **0.1.0** successfully exports live capture data from a loaded world.
-The first validated export contained 294 unique internal Pal IDs with valid
-integer counts.
+Version **0.2.0** joins live capture counts to Palworld's runtime Paldeck and
+English-name DataTables. The validated v1.0.3 catalogue contains 288 unique
+Pal species/forms after duplicate quest, summon, flower, and oil-rig character
+rows are collapsed.
 
 This repository currently contains the exporter. The planned webapp and its
 Pal/location catalogue will remain separate from the UE4SS runtime code.
 
 ## Download and install
 
-1. Download [PalCaptureExporter-WinGDK-v0.1.0.zip](dist/PalCaptureExporter-WinGDK-v0.1.0.zip).
+1. Download [PalCaptureExporter-WinGDK-v0.2.0.zip](dist/PalCaptureExporter-WinGDK-v0.2.0.zip).
 2. Extract it into the folder containing your UE4SS `Mods` directory.
 3. Confirm this file exists:
 
@@ -44,21 +45,25 @@ use F8 by default:
 
 ## Output
 
-Each recorded Pal is represented by its stable internal character ID and
-capture count:
+Every Paldeck species/form is represented, including uncaught Pals:
 
 ```json
 {
   "id": "SheepBall",
+  "name": "Lamball",
+  "nameKey": "PAL_NAME_SheepBall",
+  "paldeckIndex": 1,
+  "paldeckSuffix": "",
   "captureCount": 18
 }
 ```
 
-Entries are sorted by internal ID so exports remain easy to compare.
+Entries are sorted in Paldeck order. An uncaught Pal has `captureCount: 0`.
 
-Important data rule: `PalCaptureCount.Items` is a **sparse map**. It contains
-only IDs with a positive recorded capture count. If an ID from the webapp's
-complete Pal catalogue is absent from the export, its capture count is zero.
+`PalCaptureCount.Items` remains the authoritative count source and is a sparse
+map. The exporter now performs the zero-fill itself by joining that map to the
+runtime catalogue. Capture records outside the Paldeck, such as human and
+special Yakushima entries, are retained under `unmappedCaptureEntries`.
 
 See [JSON format and importer rules](docs/json-format.md), the
 [JSON Schema](schema/pal_capture_data.schema.json), and the
@@ -80,7 +85,7 @@ For example, use `Key.F9` if F8 conflicts with another mod.
 
 ## Runtime architecture
 
-The exporter reads the confirmed live route:
+The exporter reads the confirmed live capture route:
 
 ```text
 PlayerController
@@ -92,6 +97,15 @@ PlayerController
 On the tested WinGDK build, `PalCaptureCount` is exposed as
 `PalPlayerRecordDataRepInfoArrayThreadSafe_IntVal`, with entries available
 through its legacy `.Items` array.
+
+It also reads these runtime DataTables:
+
+- `DT_PalMonsterParameter` for the Paldeck roster, indices, and variant flags.
+- `DT_PalNameText` for current English in-game labels.
+
+Rows are grouped by their resolved localisation key. This collapses duplicate
+quest, summon, flower, and oil-rig actors without maintaining a brittle list of
+hard-coded character IDs.
 
 ## Safety and privacy
 

@@ -44,6 +44,14 @@
         },
         "field": {
           "const": "PalPlayerRecordData.PalCaptureCount.Items"
+        },
+        "monsterTable": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nameTable": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },
@@ -63,10 +71,50 @@
         "zeroCountEntries": {
           "type": "integer",
           "minimum": 0
+        },
+        "totalCaptures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unmappedCaptureEntryCount": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
     "pals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "captureCount"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "captureCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "name": {
+            "type": ["string", "null"]
+          },
+          "nameKey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "paldeckIndex": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "paldeckSuffix": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "unmappedCaptureEntries": {
       "type": "array",
       "items": {
         "type": "object",

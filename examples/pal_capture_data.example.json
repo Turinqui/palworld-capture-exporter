@@ -1,30 +1,47 @@
 {
   "schemaVersion": 1,
-  "exporterVersion": "0.1.0",
+  "exporterVersion": "0.2.0",
   "gameVersion": null,
   "exportedAt": "2026-08-17T00:00:00Z",
   "source": {
     "platform": "WinGDK",
     "access": "UE4SS runtime",
-    "field": "PalPlayerRecordData.PalCaptureCount.Items"
+    "field": "PalPlayerRecordData.PalCaptureCount.Items",
+    "monsterTable": "/Game/Pal/DataTable/Character/DT_PalMonsterParameter",
+    "nameTable": "/Game/Pal/DataTable/Text/DT_PalNameText"
   },
   "summary": {
     "entryCount": 3,
-    "positiveCountEntries": 3,
-    "zeroCountEntries": 0
+    "positiveCountEntries": 2,
+    "zeroCountEntries": 1,
+    "totalCaptures": 23,
+    "unmappedCaptureEntryCount": 0
   },
   "pals": [
     {
-      "id": "PinkCat",
-      "captureCount": 3
-    },
-    {
       "id": "SheepBall",
+      "name": "Lamball",
+      "nameKey": "PAL_NAME_SheepBall",
+      "paldeckIndex": 1,
+      "paldeckSuffix": "",
       "captureCount": 12
     },
     {
-      "id": "Silverance",
-      "captureCount": 1
+      "id": "PinkCat",
+      "name": "Cattiva",
+      "nameKey": "PAL_NAME_PinkCat",
+      "paldeckIndex": 2,
+      "paldeckSuffix": "",
+      "captureCount": 11
+    },
+    {
+      "id": "ChickenPal",
+      "name": "Chikipi",
+      "nameKey": "PAL_NAME_ChickenPal",
+      "paldeckIndex": 3,
+      "paldeckSuffix": "",
+      "captureCount": 0
     }
-  ]
+  ],
+  "unmappedCaptureEntries": []
 }
