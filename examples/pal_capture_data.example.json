@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "exporterVersion": "0.1.0",
+  "gameVersion": null,
+  "exportedAt": "2026-08-17T00:00:00Z",
+  "source": {
+    "platform": "WinGDK",
+    "access": "UE4SS runtime",
+    "field": "PalPlayerRecordData.PalCaptureCount.Items"
+  },
+  "summary": {
+    "entryCount": 3,
+    "positiveCountEntries": 3,
+    "zeroCountEntries": 0
+  },
+  "pals": [
+    {
+      "id": "PinkCat",
+      "captureCount": 3
+    },
+    {
+      "id": "SheepBall",
+      "captureCount": 12
+    },
+    {
+      "id": "Silverance",
+      "captureCount": 1
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Turinqui/palworld-capture-exporter/main/schema/pal_capture_data.schema.json",
+  "title": "Palworld capture data export",
+  "description": "Read-only capture counts exported from PalPlayerRecordData.PalCaptureCount.Items.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "exporterVersion",
+    "gameVersion",
+    "exportedAt",
+    "source",
+    "summary",
+    "pals"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "exporterVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gameVersion": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "access", "field"],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "minLength": 1
+        },
+        "access": {
+          "const": "UE4SS runtime"
+        },
+        "field": {
+          "const": "PalPlayerRecordData.PalCaptureCount.Items"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entryCount", "positiveCountEntries", "zeroCountEntries"],
+      "properties": {
+        "entryCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "positiveCountEntries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "zeroCountEntries": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "pals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "captureCount"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "captureCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}

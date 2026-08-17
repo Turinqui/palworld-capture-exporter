@@ -1,0 +1,7 @@
+# Runtime output may reflect an individual player's progress.
+pal_capture_data.json
+
+# UE4SS/runtime logs and editor clutter.
+*.log
+.DS_Store
+Thumbs.db
